@@ -6,8 +6,8 @@ class ValidadorEmail:
     def validar(self, email):
         transicoes = {
             0: {'letra_numero': 0, 'caractere_especial': 0, '@': 1},  # Estado 0: Nome do usuário. Muda para Estado 1 com @
-            1: {'letra_numero': 1, '.': 2},  # Estado 1: Domínio do E-mail (google,yahoo, etc.). Muda para Estado 2 com .
-            2: {'letra_numero': 2, '.': 3},  # Estado 2: Parte "com" do e-mail. Pode ser que haja subdomínio (.br, por exemplo). Muda para Estado 3 com .
+            1: {'letras': 1, '.': 2},  # Estado 1: Domínio do E-mail (google,yahoo, etc.). Muda para Estado 2 com .
+            2: {'letras': 2, '.': 3},  # Estado 2: Parte "com" do e-mail. Pode ser que haja subdomínio (.br, por exemplo). Muda para Estado 3 com .
             3: {'letras': 3},  # Estado 3: Transição para o estado 4 com letras após o último ponto
         }
 
@@ -23,6 +23,7 @@ class ValidadorEmail:
                 # Retorna False se não houver transição possível para a categoria do caractere atual
                 return False
 
+        self.estado_atual = 0
         # Retorna True se o estado atual do autômato estiver em estado final (3), indicando que o e-mail é válido
         return self.estado_atual in [2,3]
 
@@ -33,7 +34,7 @@ class ValidadorEmail:
         elif caractere == '.' or caractere == '-' or caractere == '_':
             return '.'
         elif caractere == '@':
-            self.dominio == True
+            self.dominio = True
             return '@'
         else:
             return 'letras'
