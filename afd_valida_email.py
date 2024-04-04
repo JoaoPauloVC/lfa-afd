@@ -1,6 +1,7 @@
 class ValidadorEmail:
     def __init__(self):
         self.estado_atual = 0
+        self.dominio = False
 
     def validar(self, email):
         transicoes = {
@@ -27,11 +28,12 @@ class ValidadorEmail:
 
     def _get_categoria(self, caractere):
         # Retorna a categoria do caractere
-        if caractere.isalnum():
+        if caractere.isalnum() and not self.dominio:
             return 'letra_numero'
         elif caractere == '.' or caractere == '-' or caractere == '_':
             return '.'
         elif caractere == '@':
+            self.dominio == True
             return '@'
         else:
             return 'letras'
